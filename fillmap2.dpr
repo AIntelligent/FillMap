@@ -13,94 +13,114 @@ uses
 // veteran
 // 25-08-2023
 //
+// Copyright (c) 2023 veteran
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
 
 //
-// Harita Doldurma Algoritması
+// Harita Doldurma AlgoritmasÃ½
 // ===========================
 //
-// Problem: Başlangıçta verilen mxn boyutlu ve varsayılanda bir desene sahip harita veriliyor.
-// Haritanın eş parçalara bölünerek, her parçanın rastgele seçilen ve boş bir noktadan başlayarak-
-// boşluklarının eş zamansız (asynch) ve paralel (multi task) şekilde doldurulması istenmektedir.
+// Problem: BaÃ¾langÃ½Ã§ta verilen mxn boyutlu ve varsayÃ½landa bir desene sahip harita veriliyor.
+// HaritanÃ½n eÃ¾ parÃ§alara bÃ¶lÃ¼nerek, her parÃ§anÃ½n rastgele seÃ§ilen ve boÃ¾ bir noktadan baÃ¾layarak-
+// boÃ¾luklarÃ½nÃ½n eÃ¾ zamansÃ½z (asynch) ve paralel (multi task) Ã¾ekilde doldurulmasÃ½ istenmektedir.
 //
-// Kural: eğer bir nokta "varsayılan" değer ile doluysa o nokta geçilmeli ve doğru yol bulunarak -
-// boşluk doldurulmaya devam edilmelidir.
+// Kural: eÃ°er bir nokta "varsayÃ½lan" deÃ°er ile doluysa o nokta geÃ§ilmeli ve doÃ°ru yol bulunarak -
+// boÃ¾luk doldurulmaya devam edilmelidir.
 //
-// Başlangıç deseni:
+// BaÃ¾langÃ½Ã§ deseni:
 // -----------------
 //
 //   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9
-// 0   · · ·                         ·       ·   · · ·   ·     ·
-// 1 · ·         · ·       ·           ·
-// 2       ·                 ·     ·           ·           ·   ·
-// 3 · ·   · ·             · ·         ·
-// 4   · ·                     ·   ·     ·     ·   ·
-// 5       ·     ·       ·   ·   · ·   · ·             ·       ·
-// 6   ·   ·   ·   · ·       ·       ·       ·     · ·   ·
-// 7     · ·     ·                   ·   · ·       ·           ·
-// 8         ·       ·     ·   ·   · ·           ·         ·
-// 9   ·     · · ·   ·     ·   ·                           · ·
-// 0 ·     · ·     · · ·                     · ·             ·
-// 1 · ·   ·       ·     ·         ·             ·
-// 2                               · ·     · ·       ·
-// 3   ·     ·     · · ·     · · ·       ·     ·       ·   ·
-// 4 ·             ·     ·       ·     · ·       ·
-// 5 · ·   ·       ·   ·     ·                 ·
-// 6         ·     · ·           ·               ·   ·   ·   ·
-// 7   · ·         ·           ·         ·   ·   ·             ·
-// 8 ·                   ·                     ·           ·
-// 9                       ·   ·     ·   ·                   ·
-// 0   ·         ·   · ·   ·             ·   ·
-// 1   ·     ·       ·       ·                           ·
-// 2   · ·     ·   · ·               · ·     ·
-// 3           ·   ·   ·       ·         ·   ·       ·     · ·
-// 4         · ·             ·     · ·       ·   · ·
-// 5     ·     ·       ·     ·         ·       ·
-// 6                       ·   · ·           ·
-// 7       ·       ·         ·   ·           · ·         · ·
-// 8         ·         ·     · ·       ·       ·           ·
-// 9     ·         · ·   ·                 ·   · ·       ·   ·
+// 0   Â· Â· Â·                         Â·       Â·   Â· Â· Â·   Â·     Â·
+// 1 Â· Â·         Â· Â·       Â·           Â·
+// 2       Â·                 Â·     Â·           Â·           Â·   Â·
+// 3 Â· Â·   Â· Â·             Â· Â·         Â·
+// 4   Â· Â·                     Â·   Â·     Â·     Â·   Â·
+// 5       Â·     Â·       Â·   Â·   Â· Â·   Â· Â·             Â·       Â·
+// 6   Â·   Â·   Â·   Â· Â·       Â·       Â·       Â·     Â· Â·   Â·
+// 7     Â· Â·     Â·                   Â·   Â· Â·       Â·           Â·
+// 8         Â·       Â·     Â·   Â·   Â· Â·           Â·         Â·
+// 9   Â·     Â· Â· Â·   Â·     Â·   Â·                           Â· Â·
+// 0 Â·     Â· Â·     Â· Â· Â·                     Â· Â·             Â·
+// 1 Â· Â·   Â·       Â·     Â·         Â·             Â·
+// 2                               Â· Â·     Â· Â·       Â·
+// 3   Â·     Â·     Â· Â· Â·     Â· Â· Â·       Â·     Â·       Â·   Â·
+// 4 Â·             Â·     Â·       Â·     Â· Â·       Â·
+// 5 Â· Â·   Â·       Â·   Â·     Â·                 Â·
+// 6         Â·     Â· Â·           Â·               Â·   Â·   Â·   Â·
+// 7   Â· Â·         Â·           Â·         Â·   Â·   Â·             Â·
+// 8 Â·                   Â·                     Â·           Â·
+// 9                       Â·   Â·     Â·   Â·                   Â·
+// 0   Â·         Â·   Â· Â·   Â·             Â·   Â·
+// 1   Â·     Â·       Â·       Â·                           Â·
+// 2   Â· Â·     Â·   Â· Â·               Â· Â·     Â·
+// 3           Â·   Â·   Â·       Â·         Â·   Â·       Â·     Â· Â·
+// 4         Â· Â·             Â·     Â· Â·       Â·   Â· Â·
+// 5     Â·     Â·       Â·     Â·         Â·       Â·
+// 6                       Â·   Â· Â·           Â·
+// 7       Â·       Â·         Â·   Â·           Â· Â·         Â· Â·
+// 8         Â·         Â·     Â· Â·       Â·       Â·           Â·
+// 9     Â·         Â· Â·   Â·                 Â·   Â· Â·       Â·   Â·
 //
-// Sonuç:
+// SonuÃ§:
 // ------
 //
-// Bölüm: 0 Alan: (L: 0, T: 0)-(R:14, B:14) Başlangıç: (y:12, x: 0)
-// Bölüm: 1 Alan: (L:15, T: 0)-(R:29, B:14) Başlangıç: (y:12, x:17)
-// Bölüm: 2 Alan: (L: 0, T:15)-(R:14, B:29) Başlangıç: (y:21, x: 0)
-// Bölüm: 3 Alan: (L:15, T:15)-(R:29, B:29) Başlangıç: (y:26, x:28)
+// BÃ¶lÃ¼m: 0 Alan: (L: 0, T: 0)-(R:14, B:14) BaÃ¾langÃ½Ã§: (y:12, x: 0)
+// BÃ¶lÃ¼m: 1 Alan: (L:15, T: 0)-(R:29, B:14) BaÃ¾langÃ½Ã§: (y:12, x:17)
+// BÃ¶lÃ¼m: 2 Alan: (L: 0, T:15)-(R:14, B:29) BaÃ¾langÃ½Ã§: (y:21, x: 0)
+// BÃ¶lÃ¼m: 3 Alan: (L:15, T:15)-(R:29, B:29) BaÃ¾langÃ½Ã§: (y:26, x:28)
 //
 //   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9
-// 0   · · · @ @ @ @ @ @ @ @ @ @ @ @ · @ @ @ · @ · · · @ · @ @ ·
-// 1 · · @ @ @ @ · · @ @ @ · @ @ @ @ @ · @ @ @ @ @ @ @ @ @ @ @ @
-// 2 @ @ @ · @ @ @ @ @ @ @ @ · @ @ · @ @ @ @ @ · @ @ @ @ @ · @ ·
-// 3 · · @ · · @ @ @ @ @ @ · · @ @ @ @ · @ @ @ @ @ @ @ @ @ @ @ @
-// 4 @ · · @ @ @ @ @ @ @ @ @ @ · @ · @ @ · @ @ · @ · @ @ @ @ @ @
-// 5 @ @ @ · @ @ · @ @ @ · @ · @ · · @ · · @ @ @ @ @ @ · @ @ @ ·
-// 6 @ · @ · @ ·   · · @ @ @ · @ @   · @ @ @ · @ @ · · @ · @ @ @
-// 7 @ @ · · @ @ · @ @ @ @ @ @ @ @   · @ · · @ @ @ · @ @ @ @ @ ·
-// 8 @ @ @ @ · @ @ @ · @ @ · @ · @ · · @ @ @ @ @ · @ @ @ @ · @ @
-// 9 @ · @ @ · · · @ · @ @ · @ · @ @ @ @ @ @ @ @ @ @ @ @ @ · · @
-// 0 · @ @ · · @ @ · · · @ @ @ @ @ @ @ @ @ @ · · @ @ @ @ @ @ · @
-// 1 · · @ · @ @ @ · @ @ · @ @ @ @ · @ @ @ @ @ @ · @ @ @ @ @ @ @
-// 2[@]@ @ @ @ @ @ @ @ @ @ @ @ @ @ · ·[@]@ · · @ @ @ · @ @ @ @ @
-// 3 @ · @ @ · @ @ · · · @ @ · · · @ @ @ ·     · @ @ @ · @ · @ @
-// 4 · @ @ @ @ @ @ ·     · @ @ @ · @ @ · ·       · @ @ @ @ @ @ @
-// 5 · · @ · @ @ @ ·   · @ @ · @ @ @ @ @ @ @ @ · @ @ @ @ @ @ @ @
-// 6 @ @ @ @ · @ @ · · @ @ @ @ @ · @ @ @ @ @ @ @ · @ · @ · @ · @
-// 7 @ · · @ @ @ @ · @ @ @ @ @ · @ @ @ @ · @ · @ · @ @ @ @ @ @ ·
-// 8 · @ @ @ @ @ @ @ @ @ · @ @ @ @ @ @ @ @ @ @ · @ @ @ @ @ · @ @
-// 9 @ @ @ @ @ @ @ @ @ @ @ · @ · @ @ · @ · @ @ @ @ @ @ @ @ @ · @
-// 0 @ · @ @ @ @ · @ · · @ · @ @ @ @ @ @ · @ · @ @ @ @ @ @ @ @ @
-// 1[@]· @ @ · @ @ @ · @ @ @ · @ @ @ @ @ @ @ @ @ @ @ @ @ · @ @ @
-// 2 @ · · @ @ · @ · · @ @ @ @ @ @ @ · · @ @ · @ @ @ @ @ @ @ @ @
-// 3 @ @ @ @ @ · @ · @ · @ @ @ · @ @ @ @ · @ · @ @ @ · @ @ · · @
-// 4 @ @ @ @ · · @ @ @ @ @ @ · @ @ · · @ @ @ · @ · · @ @ @ @ @ @
-// 5 @ @ · @ @ · @ @ @ · @ @ · @ @ @ @ · @ @ @ · @ @ @ @ @ @ @ @
-// 6 @ @ @ @ @ @ @ @ @ @ @ ·   · · @ @ @ @ @ · @ @ @ @ @ @ @[@]@
-// 7 @ @ @ · @ @ @ · @ @ @ @ ·   · @ @ @ @ @ · · @ @ @ @ · · @ @
-// 8 @ @ @ @ · @ @ @ @ · @ @ · · @ @ @ · @ @ @ · @ @ @ @ @ · @ @
-// 9 @ @ · @ @ @ @ · ·   · @ @ @ @ @ @ @ @ · @ · · @ @ @ ·   · @
+// 0   Â· Â· Â· @ @ @ @ @ @ @ @ @ @ @ @ Â· @ @ @ Â· @ Â· Â· Â· @ Â· @ @ Â·
+// 1 Â· Â· @ @ @ @ Â· Â· @ @ @ Â· @ @ @ @ @ Â· @ @ @ @ @ @ @ @ @ @ @ @
+// 2 @ @ @ Â· @ @ @ @ @ @ @ @ Â· @ @ Â· @ @ @ @ @ Â· @ @ @ @ @ Â· @ Â·
+// 3 Â· Â· @ Â· Â· @ @ @ @ @ @ Â· Â· @ @ @ @ Â· @ @ @ @ @ @ @ @ @ @ @ @
+// 4 @ Â· Â· @ @ @ @ @ @ @ @ @ @ Â· @ Â· @ @ Â· @ @ Â· @ Â· @ @ @ @ @ @
+// 5 @ @ @ Â· @ @ Â· @ @ @ Â· @ Â· @ Â· Â· @ Â· Â· @ @ @ @ @ @ Â· @ @ @ Â·
+// 6 @ Â· @ Â· @ Â·   Â· Â· @ @ @ Â· @ @   Â· @ @ @ Â· @ @ Â· Â· @ Â· @ @ @
+// 7 @ @ Â· Â· @ @ Â· @ @ @ @ @ @ @ @   Â· @ Â· Â· @ @ @ Â· @ @ @ @ @ Â·
+// 8 @ @ @ @ Â· @ @ @ Â· @ @ Â· @ Â· @ Â· Â· @ @ @ @ @ Â· @ @ @ @ Â· @ @
+// 9 @ Â· @ @ Â· Â· Â· @ Â· @ @ Â· @ Â· @ @ @ @ @ @ @ @ @ @ @ @ @ Â· Â· @
+// 0 Â· @ @ Â· Â· @ @ Â· Â· Â· @ @ @ @ @ @ @ @ @ @ Â· Â· @ @ @ @ @ @ Â· @
+// 1 Â· Â· @ Â· @ @ @ Â· @ @ Â· @ @ @ @ Â· @ @ @ @ @ @ Â· @ @ @ @ @ @ @
+// 2[@]@ @ @ @ @ @ @ @ @ @ @ @ @ @ Â· Â·[@]@ Â· Â· @ @ @ Â· @ @ @ @ @
+// 3 @ Â· @ @ Â· @ @ Â· Â· Â· @ @ Â· Â· Â· @ @ @ Â·     Â· @ @ @ Â· @ Â· @ @
+// 4 Â· @ @ @ @ @ @ Â·     Â· @ @ @ Â· @ @ Â· Â·       Â· @ @ @ @ @ @ @
+// 5 Â· Â· @ Â· @ @ @ Â·   Â· @ @ Â· @ @ @ @ @ @ @ @ Â· @ @ @ @ @ @ @ @
+// 6 @ @ @ @ Â· @ @ Â· Â· @ @ @ @ @ Â· @ @ @ @ @ @ @ Â· @ Â· @ Â· @ Â· @
+// 7 @ Â· Â· @ @ @ @ Â· @ @ @ @ @ Â· @ @ @ @ Â· @ Â· @ Â· @ @ @ @ @ @ Â·
+// 8 Â· @ @ @ @ @ @ @ @ @ Â· @ @ @ @ @ @ @ @ @ @ Â· @ @ @ @ @ Â· @ @
+// 9 @ @ @ @ @ @ @ @ @ @ @ Â· @ Â· @ @ Â· @ Â· @ @ @ @ @ @ @ @ @ Â· @
+// 0 @ Â· @ @ @ @ Â· @ Â· Â· @ Â· @ @ @ @ @ @ Â· @ Â· @ @ @ @ @ @ @ @ @
+// 1[@]Â· @ @ Â· @ @ @ Â· @ @ @ Â· @ @ @ @ @ @ @ @ @ @ @ @ @ Â· @ @ @
+// 2 @ Â· Â· @ @ Â· @ Â· Â· @ @ @ @ @ @ @ Â· Â· @ @ Â· @ @ @ @ @ @ @ @ @
+// 3 @ @ @ @ @ Â· @ Â· @ Â· @ @ @ Â· @ @ @ @ Â· @ Â· @ @ @ Â· @ @ Â· Â· @
+// 4 @ @ @ @ Â· Â· @ @ @ @ @ @ Â· @ @ Â· Â· @ @ @ Â· @ Â· Â· @ @ @ @ @ @
+// 5 @ @ Â· @ @ Â· @ @ @ Â· @ @ Â· @ @ @ @ Â· @ @ @ Â· @ @ @ @ @ @ @ @
+// 6 @ @ @ @ @ @ @ @ @ @ @ Â·   Â· Â· @ @ @ @ @ Â· @ @ @ @ @ @ @[@]@
+// 7 @ @ @ Â· @ @ @ Â· @ @ @ @ Â·   Â· @ @ @ @ @ Â· Â· @ @ @ @ Â· Â· @ @
+// 8 @ @ @ @ Â· @ @ @ @ Â· @ @ Â· Â· @ @ @ Â· @ @ @ Â· @ @ @ @ @ Â· @ @
+// 9 @ @ Â· @ @ @ @ Â· Â·   Â· @ @ @ @ @ @ @ @ Â· @ Â· Â· @ @ @ Â·   Â· @
 //
-// Not: Her bölümün başlangıç konumu "[ ]" içerisinde belirtilmiştir.
+// Not: Her bÃ¶lÃ¼mÃ¼n baÃ¾langÃ½Ã§ konumu "[ ]" iÃ§erisinde belirtilmiÃ¾tir.
 //
 
 const
@@ -109,9 +129,9 @@ const
 
 const
   // Deseni ifade eden karakter.
-  DEFAULT_VALUE             = Ord('·');
+  DEFAULT_VALUE             = Ord('Â·');
 
-  // Boşluğu doldurmak için istenen karakter.
+  // BoÃ¾luÃ°u doldurmak iÃ§in istenen karakter.
   FILL_VALUE                = Ord('@');
 
 const
@@ -370,14 +390,14 @@ var
 
     (*
      * !!! Dikkat !!!
-     * Konsol ekranına çıktılama eş zamansız (asynch) işlemler için uygun değildir.
-     * Bu nedenle eş zamanlama zorlanmalıdır.
+     * Konsol ekranÃ½na Ã§Ã½ktÃ½lama eÃ¾ zamansÃ½z (asynch) iÃ¾lemler iÃ§in uygun deÃ°ildir.
+     * Bu nedenle eÃ¾ zamanlama zorlanmalÃ½dÃ½r.
      *
      * Bkz: https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-entercriticalsection
      *)
     EnterCriticalSection( inContextPtr^.CriticalSection^ );
 
-    WriteLn( '>>> ', inContextPtr^.Index, '. ', GetCurrentThreadId():6, ' tamamlandı.' );
+    WriteLn( '>>> ', inContextPtr^.Index, '. ', GetCurrentThreadId():6, ' tamamlandÃ½.' );
 
     LeaveCriticalSection( inContextPtr^.CriticalSection^ );
 
@@ -431,13 +451,13 @@ var
 
       CriticalSection := l_ptrCriticalSection;
 
-      WriteLn( 'Bölüm:', i:2, ' Alan: ', Range.ToString(), ' Başlangıç: ', Start.ToString() );
+      WriteLn( 'BÃ¶lÃ¼m:', i:2, ' Alan: ', Range.ToString(), ' BaÃ¾langÃ½Ã§: ', Start.ToString() );
     end;
 
     (*
      * !!! Not !!!
-     * İşlemlerin paralel eş-zamansız (async) yapılabilmesi için yeni iş parçacıklarına ihtiyaç vardır.
-     * Aşağıda her bir bölümün eş-zamansız (async) işlenebilmesi için birer iş parçacığı oluşturuluyor.
+     * ÃÃ¾lemlerin paralel eÃ¾-zamansÃ½z (async) yapÃ½labilmesi iÃ§in yeni iÃ¾ parÃ§acÃ½klarÃ½na ihtiyaÃ§ vardÃ½r.
+     * AÃ¾aÃ°Ã½da her bir bÃ¶lÃ¼mÃ¼n eÃ¾-zamansÃ½z (async) iÃ¾lenebilmesi iÃ§in birer iÃ¾ parÃ§acÃ½Ã°Ã½ oluÃ¾turuluyor.
      *
      * Bkz: https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createthread
      *)
@@ -449,16 +469,16 @@ var
     i : Integer;
   begin
     (*
-     * İş parçacıkları başlatılıyor.
+     * ÃÃ¾ parÃ§acÃ½klarÃ½ baÃ¾latÃ½lÃ½yor.
      *
      *)
     for i := 0 to (SECTION_COUNT - 1) do ResumeThread( l_arrThreads[ i ] );
 
     (*
      * !!! Not !!!
-     * Her bölüm için oluşturulan iş parçacıklarının hepsinin görevini bitirmesini -
-     * beklemeliyiz ki aksi halde sonuçlar hatalı olacaktır. Aşağıdaki kodlar -
-     * bütün iş parçacıkları görevini tamamlayana kadar program akışını bekletecektir.
+     * Her bÃ¶lÃ¼m iÃ§in oluÃ¾turulan iÃ¾ parÃ§acÃ½klarÃ½nÃ½n hepsinin gÃ¶revini bitirmesini -
+     * beklemeliyiz ki aksi halde sonuÃ§lar hatalÃ½ olacaktÃ½r. AÃ¾aÃ°Ã½daki kodlar -
+     * bÃ¼tÃ¼n iÃ¾ parÃ§acÃ½klarÃ½ gÃ¶revini tamamlayana kadar program akÃ½Ã¾Ã½nÃ½ bekletecektir.
      *
      * Bkz: https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitformultipleobjects
      *)
