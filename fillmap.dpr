@@ -33,14 +33,17 @@ uses
 //
 
 //
-// Harita Doldurma Algoritmasý
+// Harita Doldurma Algoritması
 // ===========================
 //
-// Problem: Baþlangýçta verilen mxn boyutlu ve varsayýlanda bir desene sahip harita veriliyor.
-// Bu harita üzerinde, rastgele seçilen ve boþ olan bir noktadan baþlayarak boþluklarýn -
-// doldurulmasý istenmektedir.
+// Problem: Baþlangıçta verilen mxn boyutlu ve varsayılanda bir desene sahip harita veriliyor.
+// Haritanın eş parçalara bölünerek, her parçanın rastgele seçilen ve boş bir noktadan başlayarak-
+// boşluklarının eş zamansız (asynch) ve paralel (multi task) şekilde doldurulması istenmektedir.
 //
-// Baþlangýç deseni:
+// Kural: eğer bir nokta "varsayılan" deer ile doluysa o nokta geçilmeli ve doğru yol bulunarak -
+// boşluk doldurulmaya devam edilmelidir.
+//
+// Başlangıç deseni:
 // -----------------
 //
 //   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9
@@ -68,7 +71,7 @@ uses
 // Sonuç:
 // ------
 //
-// Baþlangýç konum (y, x): 13, 8
+// Başlangıç konum (y, x): 13, 8
 //
 //   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9
 // 0 @ @ · · @ @ @ @ @ @ @ @ @ @ · @ @ · @ @
