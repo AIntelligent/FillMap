@@ -35,7 +35,7 @@ uses
 //
 
 //
-// Harita Doldurma Algoritmasý
+// Harita Doldurma Algoritması
 // ===========================
 //
 // Problem: Baþlangıçta verilen mxn boyutlu ve varsayılanda bir desene sahip harita veriliyor.
