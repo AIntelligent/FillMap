@@ -44,7 +44,7 @@ uses
 // boşluk doldurulmaya devam edilmelidir.
 //
 //
-// Baþlangıç deseni:
+// Başlangıç deseni:
 // -----------------
 //
 // Harita ebatı (mxn):         20x20
@@ -111,7 +111,7 @@ const
   // Deseni ifade eden karakter.
   DEFAULT_VALUE    = Ord('·');
 
-  // Boþluðu doldurmak için istenen karakter.
+  // Boşluğu doldurmak için istenen karakter.
   FILL_VALUE       = Ord('@');
 
 type
