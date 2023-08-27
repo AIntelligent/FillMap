@@ -9,29 +9,49 @@ uses
 
 //
 // veteran
-// 25-08-2023
+// 26-08-2023
+//
+// Copyright (c) 2023 veteran
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 //
 
 //
 // Harita Doldurma Algoritması
 // ===========================
 //
-// Problem: Baþlangıçta verilen mxn boyutlu ve varsayılanda bir desene sahip harita veriliyor.
-// Bu harita üzerinde, rastgele seçilen ve boþ olan bir noktadan baþlayarak boþluklarýn -
+// Problem: Başlangıçta verilen mxn boyutlu ve varsayılanda bir desene sahip harita veriliyor.
+// Bu harita üzerinde, rastgele seçilen ve boş olan bir noktadan başlayarak boşlukların -
 // doldurulmasý istenmektedir.
 //
-// Kural: eðer bir nokta "varsayılan" deðer ile doluysa o nokta geçilmeli ve doğru yol bulunarak -
-// boþluk doldurulmaya devam edilmelidir.
+// Kural: eğer bir nokta "varsayılan" deðer ile doluysa o nokta geçilmeli ve doğru yol bulunarak -
+// boşluk doldurulmaya devam edilmelidir.
 //
 //
 // Baþlangıç deseni:
 // -----------------
 //
-// Harita ebatý (mxn):         20x20
-// Harita toplam hücre sayýsý: 400
-// Doluluk oraný:              %37.125
-// Doldurulan hücre sayýsý:    149
-// Doldurulmayan hücre sayýsý: 251
+// Harita ebatı (mxn):         20x20
+// Harita toplam hücre sayısı: 400
+// Doluluk oranı:              %37.125
+// Doldurulan hücre sayısı:    149
+// Doldurulmayan hücre sayısı: 251
 //
 //   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9
 // 0     · · · ·   ·   ·       · ·     · ·
