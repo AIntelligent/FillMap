@@ -375,7 +375,7 @@ begin
   until (not m_arrDatum[ y, x ].IsDefault);
 
   WriteLn;
-  WriteLn( 'Baþlangýç konum (y, x): ', y, ', ', x );
+  WriteLn( 'Başlangıç konum (y, x): ', y, ', ', x );
   WriteLn;
 
   _FindAndFill( m_arrDatum[ y, x ] );
