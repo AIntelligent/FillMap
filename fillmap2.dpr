@@ -38,14 +38,14 @@ uses
 // Harita Doldurma Algoritmasý
 // ===========================
 //
-// Problem: Baþlangýçta verilen mxn boyutlu ve varsayýlanda bir desene sahip harita veriliyor.
-// Haritanýn eþ parçalara bölünerek, her parçanýn rastgele seçilen ve boþ bir noktadan baþlayarak-
-// boþluklarýnýn eþ zamansýz (asynch) ve paralel (multi task) þekilde doldurulmasý istenmektedir.
+// Problem: Baþlangıçta verilen mxn boyutlu ve varsayılanda bir desene sahip harita veriliyor.
+// Haritanın eş parçalara bölünerek, her parçanın rastgele seçilen ve boş bir noktadan başlayarak-
+// boşluklarının eş zamansız (asynch) ve paralel (multi task) şekilde doldurulması istenmektedir.
 //
-// Kural: eðer bir nokta "varsayýlan" deðer ile doluysa o nokta geçilmeli ve doðru yol bulunarak -
-// boþluk doldurulmaya devam edilmelidir.
+// Kural: eğer bir nokta "varsayılan" deer ile doluysa o nokta geçilmeli ve doğru yol bulunarak -
+// boşluk doldurulmaya devam edilmelidir.
 //
-// Baþlangýç deseni:
+// Başlangıç deseni:
 // -----------------
 //
 //   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9
@@ -120,7 +120,7 @@ uses
 // 8 @ @ @ @ · @ @ @ @ · @ @ · · @ @ @ · @ @ @ · @ @ @ @ @ · @ @
 // 9 @ @ · @ @ @ @ · ·   · @ @ @ @ @ @ @ @ · @ · · @ @ @ ·   · @
 //
-// Not: Her bölümün baþlangýç konumu "[ ]" içerisinde belirtilmiþtir.
+// Not: Her bölümün başlangıç konumu "[ ]" içerisinde belirtilmiştir.
 //
 
 const
@@ -131,7 +131,7 @@ const
   // Deseni ifade eden karakter.
   DEFAULT_VALUE             = Ord('·');
 
-  // Boþluðu doldurmak için istenen karakter.
+  // Boşluğu doldurmak için istenen karakter.
   FILL_VALUE                = Ord('@');
 
 const
@@ -390,14 +390,14 @@ var
 
     (*
      * !!! Dikkat !!!
-     * Konsol ekranýna çýktýlama eþ zamansýz (asynch) iþlemler için uygun deðildir.
-     * Bu nedenle eþ zamanlama zorlanmalýdýr.
+     * Konsol ekranına çıktılama eş zamansız (asynch) işlemler için uygun değildir.
+     * Bu nedenle eş zamanlama zorlanmalıdır.
      *
      * Bkz: https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-entercriticalsection
      *)
     EnterCriticalSection( inContextPtr^.CriticalSection^ );
 
-    WriteLn( '>>> ', inContextPtr^.Index, '. ', GetCurrentThreadId():6, ' tamamlandý.' );
+    WriteLn( '>>> ', inContextPtr^.Index, '. ', GetCurrentThreadId():6, ' tamamlandı.' );
 
     LeaveCriticalSection( inContextPtr^.CriticalSection^ );
 
@@ -451,13 +451,13 @@ var
 
       CriticalSection := l_ptrCriticalSection;
 
-      WriteLn( 'Bölüm:', i:2, ' Alan: ', Range.ToString(), ' Baþlangýç: ', Start.ToString() );
+      WriteLn( 'Bölüm:', i:2, ' Alan: ', Range.ToString(), ' Başlangıç: ', Start.ToString() );
     end;
 
     (*
      * !!! Not !!!
-     * Ýþlemlerin paralel eþ-zamansýz (async) yapýlabilmesi için yeni iþ parçacýklarýna ihtiyaç vardýr.
-     * Aþaðýda her bir bölümün eþ-zamansýz (async) iþlenebilmesi için birer iþ parçacýðý oluþturuluyor.
+     * İşlemlerin paralel eş-zamansız (async) yapılabilmesi için yeni iş parçacıklarına ihtiyaç vardır.
+     * Aşağıda her bir bölümün eş-zamansız (async) işlenebilmesi için birer iş parçacığı oluşturuluyor.
      *
      * Bkz: https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createthread
      *)
@@ -476,9 +476,9 @@ var
 
     (*
      * !!! Not !!!
-     * Her bölüm için oluþturulan iþ parçacýklarýnýn hepsinin görevini bitirmesini -
-     * beklemeliyiz ki aksi halde sonuçlar hatalý olacaktýr. Aþaðýdaki kodlar -
-     * bütün iþ parçacýklarý görevini tamamlayana kadar program akýþýný bekletecektir.
+     * Her bölüm için oluşturulan iş parçacıklarının hepsinin görevini bitirmesini -
+     * beklemeliyiz ki aksi halde sonuçlar hatalı olacaktır. Aşağıdaki kodlar -
+     * bütün iş parçacıkları görevini tamamlayana kadar program akışını bekletecektir.
      *
      * Bkz: https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitformultipleobjects
      *)
