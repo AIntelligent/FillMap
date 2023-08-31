@@ -60,3 +60,22 @@ Initially mxn size and patterned map is given by default. The map is divided int
 
 If a point is filled with a "default" value, that point must be passed and the space must be continued by finding the right path.
 
+# fillmap4.dpr
+
+### Problem:
+
+Başlangıçta verilen mxn boyutlu ve varsayılanda bir desene sahip harita veriliyor. Bu harita üzerinde, rastgele seçilen ve boş olan bir noktadan başlayarak boşlukların doldurulması istenmektedir. Problem "Pointer" ve "Bağlı Liste" kullanırarak çözülmüştür.
+
+### Kural:
+
+Eğer bir nokta "varsayılan" değer ile doluysa o nokta geçilmeli ve doğru yol bulunarak boşluk doldurulmaya devam edilmelidir.
+
+## EN
+
+### Problem:
+
+The map with a size of mxn and a pattern by default is given at the beginning. On this map, it is requested to fill in the blanks starting from a randomly selected and empty point. Problem solved using "Pointer" and "Linked List".
+
+### Rule:
+
+If a point is filled with the "default" value, that point should be passed and the gap should be continued by finding the correct path.
