@@ -79,3 +79,21 @@ The map with a size of mxn and a pattern by default is given at the beginning. O
 ### Rule:
 
 If a point is filled with the "default" value, that point should be passed and the gap should be continued by finding the correct path.
+
+# fillmap5.dpr
+
+### Problem:
+
+Başlangıçta verilen mxn boyutlu ve varsayılanda bir desene sahip harita veriliyor. Bu harita üzerinde, rastgele seçilen ve boş olan bir noktadan başlayarak boşlukların doldurulması istenmektedir.
+Klasik programlama yaklaşımı, doğrusal bellek erişimi (lineer memory access) ve göstergeç (pointer) kullanılarak çözülmüştür.
+
+### Kural:
+
+Eğer bir nokta "varsayılan" değer ile doluysa o nokta geçilmeli ve doğru yol bulunarak boşluk doldurulmaya devam edilmelidir.
+
+## EN
+
+### Problem:
+
+The map with a size of mxn and a pattern by default is given at the beginning. On this map, it is requested to fill in the blanks starting from a randomly selected and empty point.
+The classical programming approach is solved using linear memory access and pointer.
