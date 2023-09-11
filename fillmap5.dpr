@@ -13,67 +13,67 @@ uses
 //
 
 //
-// Harita Doldurma Algoritmasý
+// Harita Doldurma AlgoritmasÄ±
 // ===========================
 //
-// Problem: Baþlangýçta verilen mxn boyutlu ve varsayýlanda bir desene sahip harita veriliyor.
-// Bu harita üzerinde, rastgele seçilen ve boþ olan bir noktadan baþlayarak boþluklarýn -
-// doldurulmasý istenmektedir.
+// Problem: BaÃ¾langÄ±Ã§ta verilen mxn boyutlu ve varsayÄ±landa bir desene sahip harita veriliyor.
+// Bu harita Ã¼zerinde, rastgele seÃ§ilen ve boÃ¾ olan bir noktadan baÅŸlayarak boÅŸluklarÄ±n -
+// doldurulmasÄ± istenmektedir.
 //
-// Kural: Eðer bir nokta "varsayýlan" deðer ile doluysa o nokta geçilmeli ve doðru yol bulunarak -
-// boþluk doldurulmaya devam edilmelidir.
+// Kural: EÄŸer bir nokta "varsayÄ±lan" deÃ°er ile doluysa o nokta geÃ§ilmeli ve doÄŸru yol bulunarak -
+// boÅŸluk doldurulmaya devam edilmelidir.
 //
-// Baþlangýç deseni:
+// BaÃ¾langÄ±Ã§ deseni:
 // -----------------
 //
 //   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9
-// 0     · ·                     ·     ·
-// 1   · ·   ·                 · ·
-// 2   ·           ·           · · ·   ·
-// 3     ·             ·         · ·   ·
-// 4   · ·           · ·         · ·   ·
-// 5           ·     ·           ·
-// 6   ·   ·             ·                 ·
-// 7     ·             · ·   ·   ·   ·
-// 8                 · ·   ·   ·   ·
-// 9           ·           ·       · ·     ·
-// 0   · ·             · ·     · ·
-// 1         ·     · ·           · ·
-// 2       ·                 ·             ·
-// 3           ·         · ·     ·   ·
-// 4                   ·     ·     ·     ·
-// 5 ·             ·     ·
-// 6     ·           ·         ·     ·
-// 7                         ·           · ·
-// 8   ·   · ·             ·   ·   ·     · ·
-// 9   · · ·       · · ·           ·     · ·
+// 0     Â· Â·                     Â·     Â·
+// 1   Â· Â·   Â·                 Â· Â·
+// 2   Â·           Â·           Â· Â· Â·   Â·
+// 3     Â·             Â·         Â· Â·   Â·
+// 4   Â· Â·           Â· Â·         Â· Â·   Â·
+// 5           Â·     Â·           Â·
+// 6   Â·   Â·             Â·                 Â·
+// 7     Â·             Â· Â·   Â·   Â·   Â·
+// 8                 Â· Â·   Â·   Â·   Â·
+// 9           Â·           Â·       Â· Â·     Â·
+// 0   Â· Â·             Â· Â·     Â· Â·
+// 1         Â·     Â· Â·           Â· Â·
+// 2       Â·                 Â·             Â·
+// 3           Â·         Â· Â·     Â·   Â·
+// 4                   Â·     Â·     Â·     Â·
+// 5 Â·             Â·     Â·
+// 6     Â·           Â·         Â·     Â·
+// 7                         Â·           Â· Â·
+// 8   Â·   Â· Â·             Â·   Â·   Â·     Â· Â·
+// 9   Â· Â· Â·       Â· Â· Â·           Â·     Â· Â·
 //
-// Sonuç:
+// SonuÃ§:
 // ------
 //
-// Baþlangýç konum (y, x): 13, 8
+// BaÃ¾langÄ±Ã§ konum (y, x): 13, 8
 //
 //   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9
-// 0 @ @ · · @ @ @ @ @ @ @ @ @ @ · @ @ · @ @
-// 1 @ · · @ · @ @ @ @ @ @ @ @ · · @ @ @ @ @
-// 2 @ · @ @ @ @ @ · @ @ @ @ @ · · · @ · @ @
-// 3 @ @ · @ @ @ @ @ @ · @ @ @ @ · · @ · @ @
-// 4 @ · · @ @ @ @ @ · · @ @ @ @ · · @ · @ @
-// 5 @ @ @ @ @ · @ @ · @ @ @ @ @ · @ @ @ @ @
-// 6 @ · @ · @ @ @ @ @ @ · @ @ @ @ @ @ @ @ ·
-// 7 @ @ · @ @ @ @ @ @ · · @ · @ · @ · @ @ @
-// 8 @ @ @ @ @ @ @ @ · · @ · @ · @ · @ @ @ @
-// 9 @ @ @ @ @ · @ @ @ @ @ · @ @ @ · · @ @ ·
-// 0 @ · · @ @ @ @ @ @ · · @ @ · · @ @ @ @ @
-// 1 @ @ @ @ · @ @ · · @ @ @ @ @ · · @ @ @ @
-// 2 @ @ @ · @ @ @ @ @ @ @ @ · @ @ @ @ @ @ ·
-// 3 @ @ @ @ @ · @ @ @ @ · · @ @ · @ · @ @ @
-// 4 @ @ @ @ @ @ @ @ @ · @ @ · @ @ · @ @ · @
-// 5 · @ @ @ @ @ @ · @ @ · @ @ @ @ @ @ @ @ @
-// 6 @ @ · @ @ @ @ @ · @ @ @ @ · @ @ · @ @ @
-// 7 @ @ @ @ @ @ @ @ @ @ @ @ · @ @ @ @ @ · ·
-// 8 @ · @ · · @ @ @ @ @ @ · @ · @ · @ @ · ·
-// 9 @ · · · @ @ @ · · · @ @ @ @ @ · @ @ · ·
+// 0 @ @ Â· Â· @ @ @ @ @ @ @ @ @ @ Â· @ @ Â· @ @
+// 1 @ Â· Â· @ Â· @ @ @ @ @ @ @ @ Â· Â· @ @ @ @ @
+// 2 @ Â· @ @ @ @ @ Â· @ @ @ @ @ Â· Â· Â· @ Â· @ @
+// 3 @ @ Â· @ @ @ @ @ @ Â· @ @ @ @ Â· Â· @ Â· @ @
+// 4 @ Â· Â· @ @ @ @ @ Â· Â· @ @ @ @ Â· Â· @ Â· @ @
+// 5 @ @ @ @ @ Â· @ @ Â· @ @ @ @ @ Â· @ @ @ @ @
+// 6 @ Â· @ Â· @ @ @ @ @ @ Â· @ @ @ @ @ @ @ @ Â·
+// 7 @ @ Â· @ @ @ @ @ @ Â· Â· @ Â· @ Â· @ Â· @ @ @
+// 8 @ @ @ @ @ @ @ @ Â· Â· @ Â· @ Â· @ Â· @ @ @ @
+// 9 @ @ @ @ @ Â· @ @ @ @ @ Â· @ @ @ Â· Â· @ @ Â·
+// 0 @ Â· Â· @ @ @ @ @ @ Â· Â· @ @ Â· Â· @ @ @ @ @
+// 1 @ @ @ @ Â· @ @ Â· Â· @ @ @ @ @ Â· Â· @ @ @ @
+// 2 @ @ @ Â· @ @ @ @ @ @ @ @ Â· @ @ @ @ @ @ Â·
+// 3 @ @ @ @ @ Â· @ @ @ @ Â· Â· @ @ Â· @ Â· @ @ @
+// 4 @ @ @ @ @ @ @ @ @ Â· @ @ Â· @ @ Â· @ @ Â· @
+// 5 Â· @ @ @ @ @ @ Â· @ @ Â· @ @ @ @ @ @ @ @ @
+// 6 @ @ Â· @ @ @ @ @ Â· @ @ @ @ Â· @ @ Â· @ @ @
+// 7 @ @ @ @ @ @ @ @ @ @ @ @ Â· @ @ @ @ @ Â· Â·
+// 8 @ Â· @ Â· Â· @ @ @ @ @ @ Â· @ Â· @ Â· @ @ Â· Â·
+// 9 @ Â· Â· Â· @ @ @ Â· Â· Â· @ @ @ @ @ Â· @ @ Â· Â·
 //
 
 const
@@ -83,9 +83,9 @@ const
 
 const
   // Deseni ifade eden karakter.
-  DEFAULT_VALUE     = Ord('·');
+  DEFAULT_VALUE     = Ord('Â·');
 
-  // Boþluðu doldurmak için istenen karakter.
+  // BoÃ¾luÃ°u doldurmak iÃ§in istenen karakter.
   FILL_VALUE        = Ord('@');
 
 type
@@ -287,7 +287,7 @@ begin
   until (MapPtr^[ MapDotToIndex ] <> DEFAULT_VALUE);
 
   WriteLn;
-  WriteLn( 'Baþlangýç konum (y, x): ', y, ', ', x );
+  WriteLn( 'BaÃ¾langÄ±Ã§ konum (y, x): ', y, ', ', x );
   WriteLn;
 
   _FindAndFill;
