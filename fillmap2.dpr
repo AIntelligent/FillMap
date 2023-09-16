@@ -10,10 +10,12 @@ uses
   System.SysUtils;
 
 //
-// veteran
-// 25-08-2023
+// fillmap2.dpr
 //
-// Copyright (c) 2023 veteran
+// Author:
+//       Hakan E. Kartal <hek@nula.com.tr>
+//
+// Copyright (c) 2023 Hakan E. Kartal
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +35,7 @@ uses
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-
+//
 //
 // Harita Doldurma Algoritması
 // ===========================
