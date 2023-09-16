@@ -8,78 +8,100 @@ uses
   System.SysUtils;
 
 //
-// veteran
-// 30-08-2023
+// fillmap4.dpr
 //
-
+// Author:
+//       Hakan E. Kartal <hek@nula.com.tr>
 //
-// Harita Doldurma Algoritmasý
+// Copyright (c) 2023 Hakan E. Kartal
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+//
+//
+// Harita Doldurma AlgoritmasÄ±
 // ===========================
 //
-// Problem: Baþlangýçta verilen mxn boyutlu ve varsayýlanda bir desene sahip harita veriliyor.
-// Bu harita üzerinde, rastgele seçilen ve boþ olan bir noktadan baþlayarak boþluklarýn -
-// doldurulmasý istenmektedir.
+// Problem: BaÃ¾langÃ½Ã§ta verilen mxn boyutlu ve varsayÃ½landa bir desene sahip harita veriliyor.
+// Bu harita Ã¼zerinde, rastgele seÃ§ilen ve boÃ¾ olan bir noktadan baÅŸlayarak boÅŸluklarÄ±n -
+// doldurulmasÃ½ istenmektedir.
 //
-// Kural: Eðer bir nokta "varsayýlan" deðer ile doluysa o nokta geçilmeli ve doðru yol bulunarak -
-// boþluk doldurulmaya devam edilmelidir.
+// Kural: EÄŸer bir nokta "varsayÄ±lan" deÄŸer ile doluysa o nokta geÃ§ilmeli ve doÃ°ru yol bulunarak -
+// boÃ¾luk doldurulmaya devam edilmelidir.
 //
-// Baþlangýç deseni:
+// BaÃ¾langÄ±Ã§ deseni:
 // -----------------
 //
-// Harita ebatý (mxn):         20x20
-// Harita toplam hücre sayýsý: 400
-// Doluluk oraný:              %37.125
-// Doldurulan hücre sayýsý:    149
-// Doldurulmayan hücre sayýsý: 251
+// Harita ebatÄ± (mxn):         20x20
+// Harita toplam hÃ¼cre sayÄ±sÄ±: 400
+// Doluluk oranÄ±:              %37.125
+// Doldurulan hÃ¼cre sayÄ±sÄ±:    149
+// Doldurulmayan hÃ¼cre sayÄ±sÄ±: 251
 //
 //   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9
-// 0     · · · ·   ·   ·       · ·     · ·
-// 1 · ·       ·     ·   ·   · ·     ·
-// 2     ·     · · ·       ·     ·     ·
-// 3     ·       · · · · · · · · · · · ·
-// 4       ·     ·               · ·     ·
-// 5 ·           · · ·       ·   · · ·
-// 6       ·     · · ·                 ·   ·
-// 7       ·   ·   · · ·           ·   ·
-// 8       ·       ·     ·     ·           ·
-// 9 · ·       ·     · · · · ·           ·
-// 0 · ·   ·     · ·   · ·                 ·
-// 1 ·   ·         ·           · · · ·
-// 2 ·     ·             ·   ·     · · · ·
-// 3             ·   · ·           · ·   ·
-// 4 ·   · · ·   · ·   · · · · · ·
-// 5           · ·       ·           ·     ·
-// 6       ·   ·       · · ·   ·   · ·   ·
-// 7                 ·               ·
-// 8   ·     ·             ·     ·     ·   ·
-// 9 · ·   ·             ·       ·   · · ·
+// 0     Â· Â· Â· Â·   Â·   Â·       Â· Â·     Â· Â·
+// 1 Â· Â·       Â·     Â·   Â·   Â· Â·     Â·
+// 2     Â·     Â· Â· Â·       Â·     Â·     Â·
+// 3     Â·       Â· Â· Â· Â· Â· Â· Â· Â· Â· Â· Â· Â·
+// 4       Â·     Â·               Â· Â·     Â·
+// 5 Â·           Â· Â· Â·       Â·   Â· Â· Â·
+// 6       Â·     Â· Â· Â·                 Â·   Â·
+// 7       Â·   Â·   Â· Â· Â·           Â·   Â·
+// 8       Â·       Â·     Â·     Â·           Â·
+// 9 Â· Â·       Â·     Â· Â· Â· Â· Â·           Â·
+// 0 Â· Â·   Â·     Â· Â·   Â· Â·                 Â·
+// 1 Â·   Â·         Â·           Â· Â· Â· Â·
+// 2 Â·     Â·             Â·   Â·     Â· Â· Â· Â·
+// 3             Â·   Â· Â·           Â· Â·   Â·
+// 4 Â·   Â· Â· Â·   Â· Â·   Â· Â· Â· Â· Â· Â·
+// 5           Â· Â·       Â·           Â·     Â·
+// 6       Â·   Â·       Â· Â· Â·   Â·   Â· Â·   Â·
+// 7                 Â·               Â·
+// 8   Â·     Â·             Â·     Â·     Â·   Â·
+// 9 Â· Â·   Â·             Â·       Â·   Â· Â· Â·
 //
-// Sonuç:
+// SonuÃ§:
 // -----------------
 //
-// Baþlangýç konum (y, x): 15, 13
+// BaÃ¾langÃ½Ã§ konum (y, x): 15, 13
 //
 //   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9
-// 0     · · · ·   ·   ·       · ·     · · @
-// 1 · · @ @ @ ·     ·   ·   · ·     · @ @ @
-// 2 @ @ · @ @ · · ·       ·     ·     · @ @
-// 3 @ @ · @ @ @ · · · · · · · · · · · · @ @
-// 4 @ @ @ · @ @ · @ @ @ @ @ @ @ · · @ @ · @
-// 5 · @ @ @ @ @ · · · @ @ @ · @ · · · @ @ @
-// 6 @ @ @ · @ @ · · · @ @ @ @ @ @ @ @ · @ ·
-// 7 @ @ @ · @ · @ · · · @ @ @ @ @ · @ · @ @
-// 8 @ @ @ · @ @ @ ·     · @ @ · @ @ @ @ @ ·
-// 9 · · @ @ @ · @ @ · · · · · @ @ @ @ @ ·
-// 0 · · @ · @ @ · · @ · · @ @ @ @ @ @ @ @ ·
-// 1 · @ · @ @ @ @ · @ @ @ @ @ · · · · @ @ @
-// 2 · @ @ · @ @ @ @ @ @ · @ · @ @ · · · · @
-// 3 @ @ @ @ @ @ · @ · · @ @ @ @ @ · · @ · @
-// 4 · @ · · · @ · · @ · · · · · · @ @ @ @ @
-// 5 @ @ @ @ @ · · @ @ @ · @ @[@]@ @ · @ @ ·
-// 6 @ @ @ · @ · @ @ @ · · · @ · @ · · @ · @
-// 7 @ @ @ @ @ @ @ @ · @ @ @ @ @ @ @ · @ @ @
-// 8 @ · @ @ · @ @ @ @ @ @ · @ @ · @ @ · @ ·
-// 9 · · @ · @ @ @ @ @ @ · @ @ @ · @ · · ·
+// 0     Â· Â· Â· Â·   Â·   Â·       Â· Â·     Â· Â· @
+// 1 Â· Â· @ @ @ Â·     Â·   Â·   Â· Â·     Â· @ @ @
+// 2 @ @ Â· @ @ Â· Â· Â·       Â·     Â·     Â· @ @
+// 3 @ @ Â· @ @ @ Â· Â· Â· Â· Â· Â· Â· Â· Â· Â· Â· Â· @ @
+// 4 @ @ @ Â· @ @ Â· @ @ @ @ @ @ @ Â· Â· @ @ Â· @
+// 5 Â· @ @ @ @ @ Â· Â· Â· @ @ @ Â· @ Â· Â· Â· @ @ @
+// 6 @ @ @ Â· @ @ Â· Â· Â· @ @ @ @ @ @ @ @ Â· @ Â·
+// 7 @ @ @ Â· @ Â· @ Â· Â· Â· @ @ @ @ @ Â· @ Â· @ @
+// 8 @ @ @ Â· @ @ @ Â·     Â· @ @ Â· @ @ @ @ @ Â·
+// 9 Â· Â· @ @ @ Â· @ @ Â· Â· Â· Â· Â· @ @ @ @ @ Â·
+// 0 Â· Â· @ Â· @ @ Â· Â· @ Â· Â· @ @ @ @ @ @ @ @ Â·
+// 1 Â· @ Â· @ @ @ @ Â· @ @ @ @ @ Â· Â· Â· Â· @ @ @
+// 2 Â· @ @ Â· @ @ @ @ @ @ Â· @ Â· @ @ Â· Â· Â· Â· @
+// 3 @ @ @ @ @ @ Â· @ Â· Â· @ @ @ @ @ Â· Â· @ Â· @
+// 4 Â· @ Â· Â· Â· @ Â· Â· @ Â· Â· Â· Â· Â· Â· @ @ @ @ @
+// 5 @ @ @ @ @ Â· Â· @ @ @ Â· @ @[@]@ @ Â· @ @ Â·
+// 6 @ @ @ Â· @ Â· @ @ @ Â· Â· Â· @ Â· @ Â· Â· @ Â· @
+// 7 @ @ @ @ @ @ @ @ Â· @ @ @ @ @ @ @ Â· @ @ @
+// 8 @ Â· @ @ Â· @ @ @ @ @ @ Â· @ @ Â· @ @ Â· @ Â·
+// 9 Â· Â· @ Â· @ @ @ @ @ @ Â· @ @ @ Â· @ Â· Â· Â·
 //
 
 const
@@ -88,9 +110,9 @@ const
 
 const
   // Deseni ifade eden karakter.
-  DEFAULT_VALUE    = Ord('·');
+  DEFAULT_VALUE    = Ord('Â·');
 
-  // Boþluðu doldurmak için istenen karakter.
+  // BoÃ¾luÃ°u doldurmak iÃ§in istenen karakter.
   FILL_VALUE       = Ord('@');
 
 type
@@ -207,11 +229,11 @@ begin
 
   l_iFillCount := Round( (VERTICAL_LIMIT * HORIZONTAL_LIMIT) * inFillRatio );
 
-  WriteLn( 'Harita ebatý (mxn):         ', VERTICAL_LIMIT, 'x', HORIZONTAL_LIMIT );
-  WriteLn( 'Harita toplam hücre sayýsý: ', VERTICAL_LIMIT * HORIZONTAL_LIMIT );
-  WriteLn( 'Doluluk oraný (%):          ', (inFillRatio * 100.0):0:3 );
-  WriteLn( 'Doldurulan hücre sayýsý:    ', l_iFillCount );
-  WriteLn( 'Doldurulmayan hücre sayýsý: ', ((VERTICAL_LIMIT * HORIZONTAL_LIMIT) - l_iFillCount) );
+  WriteLn( 'Harita ebatÃ½ (mxn):         ', VERTICAL_LIMIT, 'x', HORIZONTAL_LIMIT );
+  WriteLn( 'Harita toplam hÃ¼cre sayÃ½sÃ½: ', VERTICAL_LIMIT * HORIZONTAL_LIMIT );
+  WriteLn( 'Doluluk oranÃ½ (%):          ', (inFillRatio * 100.0):0:3 );
+  WriteLn( 'Doldurulan hÃ¼cre sayÃ½sÃ½:    ', l_iFillCount );
+  WriteLn( 'Doldurulmayan hÃ¼cre sayÃ½sÃ½: ', ((VERTICAL_LIMIT * HORIZONTAL_LIMIT) - l_iFillCount) );
 
   WriteLn;
 
@@ -316,7 +338,7 @@ begin
   until (not IsDefault( ioMapPtr^[ y, x ] ));
 
   WriteLn;
-  WriteLn( 'Baþlangýç konum (y, x): ', y, ', ', x );
+  WriteLn( 'BaÃ¾langÃ½Ã§ konum (y, x): ', y, ', ', x );
   WriteLn;
 
   _FindAndFill( ioMapPtr^[ y, x ] );
