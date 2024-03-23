@@ -1,3 +1,92 @@
+//
+// fillmap.cpp
+//
+// Author:
+//       Hakan Emre Kartal <hek@nula.com.tr>
+//
+// Copyright (c) 2023 Hakan Emre Kartal
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+//
+// Harita Doldurma Algoritması
+// ===========================
+//
+// Problem: Baþlangıçta verilen mxn boyutlu ve varsayılanda bir desene sahip harita veriliyor.
+// Haritanın eş parçalara bölünerek, her parçanın rastgele seçilen ve boş bir noktadan başlayarak-
+// boşluklarının eş zamansız (asynch) ve paralel (multi task) şekilde doldurulması istenmektedir.
+//
+// Kural: eğer bir nokta "varsayılan" deer ile doluysa o nokta geçilmeli ve doğru yol bulunarak -
+// boşluk doldurulmaya devam edilmelidir.
+//
+// Başlangıç deseni:
+// -----------------
+//
+//   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9
+// 0     · ·                     ·     ·
+// 1   · ·   ·                 · ·
+// 2   ·           ·           · · ·   ·
+// 3     ·             ·         · ·   ·
+// 4   · ·           · ·         · ·   ·
+// 5           ·     ·           ·
+// 6   ·   ·             ·                 ·
+// 7     ·             · ·   ·   ·   ·
+// 8                 · ·   ·   ·   ·
+// 9           ·           ·       · ·     ·
+// 0   · ·             · ·     · ·
+// 1         ·     · ·           · ·
+// 2       ·                 ·             ·
+// 3           ·         · ·     ·   ·
+// 4                   ·     ·     ·     ·
+// 5 ·             ·     ·
+// 6     ·           ·         ·     ·
+// 7                         ·           · ·
+// 8   ·   · ·             ·   ·   ·     · ·
+// 9   · · ·       · · ·           ·     · ·
+//
+// Sonuç:
+// ------
+//
+// Başlangıç konum (y, x): 13, 8
+//
+//   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9
+// 0 @ @ · · @ @ @ @ @ @ @ @ @ @ · @ @ · @ @
+// 1 @ · · @ · @ @ @ @ @ @ @ @ · · @ @ @ @ @
+// 2 @ · @ @ @ @ @ · @ @ @ @ @ · · · @ · @ @
+// 3 @ @ · @ @ @ @ @ @ · @ @ @ @ · · @ · @ @
+// 4 @ · · @ @ @ @ @ · · @ @ @ @ · · @ · @ @
+// 5 @ @ @ @ @ · @ @ · @ @ @ @ @ · @ @ @ @ @
+// 6 @ · @ · @ @ @ @ @ @ · @ @ @ @ @ @ @ @ ·
+// 7 @ @ · @ @ @ @ @ @ · · @ · @ · @ · @ @ @
+// 8 @ @ @ @ @ @ @ @ · · @ · @ · @ · @ @ @ @
+// 9 @ @ @ @ @ · @ @ @ @ @ · @ @ @ · · @ @ ·
+// 0 @ · · @ @ @ @ @ @ · · @ @ · · @ @ @ @ @
+// 1 @ @ @ @ · @ @ · · @ @ @ @ @ · · @ @ @ @
+// 2 @ @ @ · @ @ @ @ @ @ @ @ · @ @ @ @ @ @ ·
+// 3 @ @ @ @ @ · @ @ @ @ · · @ @ · @ · @ @ @
+// 4 @ @ @ @ @ @ @ @ @ · @ @ · @ @ · @ @ · @
+// 5 · @ @ @ @ @ @ · @ @ · @ @ @ @ @ @ @ @ @
+// 6 @ @ · @ @ @ @ @ · @ @ @ @ · @ @ · @ @ @
+// 7 @ @ @ @ @ @ @ @ @ @ @ @ · @ @ @ @ @ · ·
+// 8 @ · @ · · @ @ @ @ @ @ · @ · @ · @ @ · ·
+// 9 @ · · · @ @ @ · · · @ @ @ @ @ · @ @ · ·
+//
 #include <stdio.h>
 #include <strings.h>
 #include <stdlib.h>
